@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>angularJS模块和双向绑定</title>
+    <script src="angular-1.5.5/angular.min.js"></script>
+    <script>
+        // step 1: 声明一个模块
+        var myapp = angular.module("myapp",[]);
+
+        // step 2: 向模块注册一个控制器
+        myapp.controller("myCtrl",function($scope){
+            // 绑定一个对象数组
+            $scope.products = [
+                {name:"小米",price:1999,os:"android",birthday:new Date()},
+                {name:"华为",price:2999,os:"android",birthday:new Date()},
+                {name:"三星",price:999.1234567,os:"android",birthday:new Date()},
+                {name:"苹果",price:4999,os:"ios",birthday:new Date()}
+            ];
+
+            // 过滤函数
+            $scope.filterByPrice = function(product){
+                return product.price < 2000;    // true or false
+            };
+        });
+
+    </script>
+    <style>
+        table{
+            border-collapse: collapse;
+        }
+        table th,table tr,table td{
+            border: 1px solid #3c763d;
+        }
+        table td{
+            width:160px;
+        }
+    </style>
+</head>
+<body ng-app="myapp" ng-controller="myCtrl">
+<h2>商品信息</h2>
+<table>
+    <tr>
+        <th>id</th>
+        <th>商品名称</th>
+        <th>商品价格</th>
+        <th>操作系统</th>
+        <th>生产日期</th>
+    </tr>
+   <tr ng-repeat="product in products|orderBy:'-price'|limitTo:-2:2">
+       <td>{{$index+1}}</td>
+       <td>{{product.name}}</td>
+       <td>{{product.price|currency:'￥'}}</td>
+       <td>{{product.os|uppercase}}</td>
+       <td>{{product.birthday|date:"yyyy年MM月dd日 HH:mm:ss"}}</td>
+   </tr>
+</table>
+</body>
+</html>
